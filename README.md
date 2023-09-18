@@ -1,4 +1,4 @@
-# vueWhatsspp1
+# Vue WhatsApp Aplication
 
 ## Project Setup
 
