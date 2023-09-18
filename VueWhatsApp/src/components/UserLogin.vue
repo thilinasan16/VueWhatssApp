@@ -12,7 +12,14 @@ function signInWithGoogle() {
       <div class="login-view__image"><img src="/whatsAppIcon.jpg" /></div>
       <div class="login-view__text">WhatsApp Client</div>
       <div class="login-view__button">
-        <v-btn size="x-large" rounded="lg" prepend-icon="mdi-google-plus" variant="outlined"  @click="signInWithGoogle">
+        <v-btn
+          data-button="signInGoogle"
+          size="x-large"
+          rounded="lg"
+          prepend-icon="mdi-google-plus"
+          variant="outlined"
+          @click="signInWithGoogle"
+        >
           <template v-slot:prepend>
             <v-icon color="red"></v-icon>
           </template>

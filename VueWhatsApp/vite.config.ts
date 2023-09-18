@@ -16,5 +16,12 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  test: {
+    setupFiles: 'vuetify.config.js',
+    deps: {
+      inline: ['vuetify']
+    },
+    globals: true
   }
 })
