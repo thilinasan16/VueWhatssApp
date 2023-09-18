@@ -1,5 +1,8 @@
-import { collection, addDoc, doc, setDoc, getDocs } from 'firebase/firestore'
+import { collection, addDoc, doc, setDoc, getDocs, query, orderBy } from 'firebase/firestore'
 import { firebaseDB } from '@/firebase'
+import { type User } from '@/Interfaces/user'
+import { type Chat } from '@/Interfaces/chat'
+
 const Chat = {
   state: {
     chatUsers: [],
@@ -8,54 +11,70 @@ const Chat = {
     ChatId: null
   },
   mutations: {
-    SET_CHAT_USERS(state: { chatUsers: [] }, payload: []) {
+    SET_CHAT_USERS(state: { chatUsers: User[] }, payload: User[]) {
       state.chatUsers = payload
     },
 
-    SET_CURRENT_CHAT(state: { currentChat: any }, payload: any) {
+    SET_CURRENT_CHAT(state: { currentChat: Chat }, payload: any) {
       state.currentChat = payload
     },
 
     SET_CHAT_MESSAGES(
-      state: { chatMessages: []; conversationId: string },
-      payload: { messages: []; conversationId: string }
+      state: { chatMessages: Chat[]; ChatId: string },
+      payload: { messages: []; ChatId: string }
     ) {
       state.chatMessages = []
       state.chatMessages = payload.messages
-      state.conversationId = payload.conversationId
+      state.ChatId = payload.ChatId
     },
 
-    UPDATE_CHAT_MESSAGES(state: { chatMessages: any }, payload: any) {
-      state.chatMessages = []
-      state.chatMessages = payload
+    UPDATE_CHAT_MESSAGES(state: { chatMessages: Chat[] }, payload: Chat) {
+      state.chatMessages.push(payload)
     }
   },
   actions: {
     async SET_CHAT_USERS(context: any) {
       const db = firebaseDB
       const querySnapshot = await getDocs(collection(db, 'users'))
-      const allUsers = []
+      const allUsers: any = []
       querySnapshot.forEach((doc) => {
         allUsers.push(doc.data())
       })
       context.commit('SET_CHAT_USERS', allUsers)
     },
 
-    SET_CURRENT_CHAT(context: any, payload: any) {
+    SET_CURRENT_CHAT(context: any, payload: Chat) {
       context.commit('SET_CURRENT_CHAT', payload)
     },
 
-    SET_CHAT_MESSAGES(context: any, payload: string) {},
-
-    async UPDATE_CHAT_MESSAGES(context: any, payload: { chat: any; id: string }) {
+    async SET_CHAT_MESSAGES(context: any, chatId: string) {
       const db = firebaseDB
+      const querySnapshot = await getDocs(
+        collection(db, 'chats', chatId, 'messages'),
+        orderBy('timestamp', 'desc')
+      )
+      const messages: any = []
+      if (querySnapshot.size === 0) {
+        context.commit('SET_CHAT_MESSAGES', {
+          messages: messages,
+          ChatId: chatId
+        })
+      } else {
+        querySnapshot.forEach((doc) => {
+          messages.push(doc.data())
+          context.commit('SET_CHAT_MESSAGES', {
+            messages: messages,
+            ChatId: chatId
+          })
+        })
+      }
+    },
 
+    async UPDATE_CHAT_MESSAGES(context: any, payload: { chat: Chat; id: string }) {
+      const db = firebaseDB
       const chatRef = await doc(db, 'chats', payload.id)
-
       const messagesCollectionRef = collection(chatRef, 'messages')
-
       await addDoc(messagesCollectionRef, payload.chat)
-
       context.commit('UPDATE_CHAT_MESSAGES', payload.chat)
     }
   }

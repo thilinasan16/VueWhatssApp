@@ -1,10 +1,39 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { defineProps } from 'vue'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+import { type User } from '@/Interfaces/user'
+
+const store = useStore()
+const currentUser = computed(() => store.state.User.currentUser)
+
+const props = defineProps({
+  chatItemData: {
+    type: Object as () => User
+  }
+})
+
+function getCurrentChat(user: any) {
+  store.dispatch('SET_CURRENT_CHAT', user)
+
+  // Generate chat ID based on current user and current chat
+  const ChatId =
+    store.state.User.currentUser?.uid > store.state.Chat.currentChat?.uid
+      ? store.state.User.currentUser?.uid + store.state.Chat.currentChat?.uid
+      : store.state.Chat.currentChat?.uid + store.state.User.currentUser?.uid
+  store.dispatch('SET_CHAT_MESSAGES', ChatId)
+}
+</script>
 
 <template>
-  <div class="chat-item">
-    <div class="chat-item__profile"><img src="/whatsAppIcon.jpg" /></div>
+  <div
+    class="chat-item"
+    v-if="chatItemData?.uid !== currentUser.uid"
+    @click="getCurrentChat(chatItemData)"
+  >
+    <div class="chat-item__profile"><img :src="chatItemData?.photoURL" /></div>
     <div class="chat-item__details">
-      <div class="chat-item__name">Sandun Madushanka</div>
+      <div class="chat-item__name">{{ chatItemData?.displayName }}</div>
       <div class="chat-item__status">Hey there ! I'm using Whatsapp!!</div>
     </div>
   </div>
@@ -16,8 +45,10 @@
   justify-content: flex-start;
   padding: 5px 10px;
   min-width: 210px;
-  margin-bottom: 20px;
+  margin: 20px 5px;
   cursor: pointer;
+  border: 1px solid green;
+  border-radius: 10px;
   $chat-item: &;
   &__profile {
     img {

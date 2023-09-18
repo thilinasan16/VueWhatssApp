@@ -1,6 +1,7 @@
 import { getAuth, signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import { collection, addDoc, doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore'
 import { firebaseDB } from '@/firebase'
+import { type User } from '@/Interfaces/user'
 
 const provider = new GoogleAuthProvider()
 
@@ -10,7 +11,7 @@ const User = {
     isLoggedIn: false
   },
   mutations: {
-    SET_USER(state: { currentUser: any | null }, payload: any | null) {
+    SET_USER(state: { currentUser: User | null }, payload: any | null) {
       state.currentUser = payload
     },
     SET_LOGGED_IN(state: { isLoggedIn: boolean }, payload: boolean) {
@@ -39,7 +40,7 @@ const User = {
             console.error(e)
           }
         })
-        .catch((error) => {
+        .catch((e) => {
           console.error(e)
         })
     },
@@ -51,7 +52,7 @@ const User = {
           context.commit('SET_LOGGED_IN', false)
         })
         .catch((error) => {
-          console.error(e)
+          console.error(error)
         })
     }
   }

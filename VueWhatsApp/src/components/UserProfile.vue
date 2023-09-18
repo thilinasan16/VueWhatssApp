@@ -18,7 +18,7 @@ const currentUser = computed(() => store.state.User.currentUser)
 .profile {
   display: flex;
   justify-content: flex-start;
-  padding: 5px 10px;
+  padding: 20px 10px;
   color: black;
   &__image {
     img {

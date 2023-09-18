@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import ChatItem from '@/components/ChatItem.vue'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+const store = useStore()
+const users = computed(() => store.state.Chat.chatUsers)
 </script>
 
 <template>
   <div class="chat-list">
-    <ChatItem v-for="item in 15" :key="item.id">
+    <ChatItem v-for="item in users" :key="item.uid" :chatItemData="item">
       {{ item.message }}
     </ChatItem>
   </div>
