@@ -1,4 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useStore } from 'vuex'
+const store = useStore()
+function signInWithGoogle() {
+  store.dispatch('SET_USER')
+}
+</script>
 
 <template>
   <div class="login-view">
@@ -6,7 +12,7 @@
       <div class="login-view__image"><img src="/whatsAppIcon.jpg" /></div>
       <div class="login-view__text">WhatsApp Client</div>
       <div class="login-view__button">
-        <v-btn size="x-large" rounded="lg" prepend-icon="mdi-google-plus" variant="outlined">
+        <v-btn size="x-large" rounded="lg" prepend-icon="mdi-google-plus" variant="outlined"  @click="signInWithGoogle">
           <template v-slot:prepend>
             <v-icon color="red"></v-icon>
           </template>

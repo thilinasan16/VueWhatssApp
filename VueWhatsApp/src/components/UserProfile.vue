@@ -1,9 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+
+const store = useStore()
+const currentUser = computed(() => store.state.User.currentUser)
+</script>
 
 <template>
   <div class="profile">
-    <div class="profile__image"><img src="/whatsAppIcon.jpg" /></div>
-    <div class="profile__name">Thilina Sumithrarachchi</div>
+    <div class="profile__image"><img :src="currentUser.photoURL" /></div>
+    <div class="profile__name">{{ currentUser.displayName }}</div>
+    <div class="profile__number">{{ currentUser.phoneNumber }}</div>
   </div>
 </template>
 
@@ -25,6 +32,15 @@
     align-items: flex-start;
     color: black;
     font-size: 20px;
+    font-weight: 400;
+    margin-left: 20px;
+  }
+  &__number {
+    justify-content: flex-start;
+    display: flex;
+    align-items: flex-start;
+    color: black;
+    font-size: 16px;
     font-weight: 400;
     margin-left: 20px;
   }

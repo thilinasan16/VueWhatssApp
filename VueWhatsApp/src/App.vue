@@ -1,12 +1,22 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 import UserLogin from '@/components/UserLogin.vue'
 import ChatList from '@/components/ChatList.vue'
 import ChatWindow from '@/components/ChatWindow.vue'
 import UserProfile from '@/components/UserProfile.vue'
+
+const store = useStore()
+const isLoggedIn = computed(() => store.state.User.isLoggedIn)
+
+onMounted(() => {
+  store.dispatch('SET_CHAT_USERS')
+})
 </script>
 
 <template>
-  <UserLogin v-if="true" />
+  <UserLogin v-if="!isLoggedIn" />
   <div class="chat-container" v-else>
     <div class="chat-container__left-section">
       <UserProfile />
