@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ChatList from '../ChatList.vue'
+import ChatList from '../components/ChatList.vue'
 import { createStore } from 'vuex'
 
 describe('ChatList', () => {

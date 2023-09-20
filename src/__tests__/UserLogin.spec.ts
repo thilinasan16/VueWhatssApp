@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { mount } from '@vue/test-utils'
-import UserLogin from '../UserLogin.vue'
+import UserLogin from '../components/UserLogin.vue'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'

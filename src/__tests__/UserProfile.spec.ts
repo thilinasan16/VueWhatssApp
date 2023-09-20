@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import UserProfile from '@/components/UserProfile.vue'
+import UserProfile from '../components/UserProfile.vue'
 import { createStore } from 'vuex'
 import { describe, it, expect, beforeEach } from 'vitest'
 
