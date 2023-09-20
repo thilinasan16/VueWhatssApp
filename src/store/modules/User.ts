@@ -19,41 +19,35 @@ const User = {
     }
   },
   actions: {
-    SET_USER(context: any) {
-      const auth = getAuth()
-      const db = firebaseDB
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          const user = result.user
-          const currentUser = {
-            uid: user.uid,
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-            phoneNumber: user.phoneNumber
-          }
-          try {
-            setDoc(doc(db, 'users', user.uid), currentUser)
-            context.commit('SET_USER', currentUser)
-            context.commit('SET_LOGGED_IN', true)
-          } catch (e) {
-            console.error(e)
-          }
-        })
-        .catch((e) => {
-          console.error(e)
-        })
+    async SET_USER(context: any) {
+      try {
+        const auth = getAuth()
+        const db = firebaseDB
+        const result = await signInWithPopup(auth, provider)
+        const user = result.user
+        const currentUser = {
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          phoneNumber: user.phoneNumber
+        }
+        await setDoc(doc(db, 'users', user.uid), currentUser)
+        context.commit('SET_USER', currentUser)
+        context.commit('SET_LOGGED_IN', true)
+      } catch (error) {
+        console.error('Error setting a chat user:', error)
+      }
     },
-    LOGOUT(context: any) {
-      const auth = getAuth()
-      signOut(auth)
-        .then(() => {
-          context.commit('SET_USER', null)
-          context.commit('SET_LOGGED_IN', false)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+    async LOGOUT(context: any) {
+      try {
+        const auth = getAuth()
+        await signOut(auth)
+        context.commit('SET_USER', null)
+        context.commit('SET_LOGGED_IN', false)
+      } catch (error) {
+        console.error('Error while log out:', error)
+      }
     }
   }
 }
