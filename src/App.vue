@@ -40,7 +40,20 @@ onMounted(() => {
     <div class="chat-container__left-section">
       <div class="chat-container__left-section__wrapper">
         <UserProfile />
-        <v-btn density="compact" icon="mdi-logout" @click="logOut"></v-btn>
+
+        <v-btn
+          data-button="signInGoogle"
+          size="x-large"
+          rounded="lg"
+          prepend-icon="mdi-logout"
+          variant="outlined"
+          @click="logOut"
+        >
+          <template v-slot:prepend>
+            <v-icon color="red"></v-icon>
+          </template>
+          Log Out
+        </v-btn>
       </div>
       <ChatList />
     </div>
@@ -53,25 +66,48 @@ onMounted(() => {
 <style lang="scss" scoped>
 .chat-container {
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  height: 100vh;
-  width: 85vw;
-  padding: 100px;
+  height: auto;
+  width: 100vw;
+  padding: 20px;
   &__left-section {
-    flex: 0.35;
+    flex: 1;
     &__wrapper {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px solid darkcyan;
+      padding: 0 10px;
       .v-btn {
         display: flex;
         align-self: center;
-        margin-right: 10px;
       }
     }
   }
   &__right-section {
-    flex: 0.65;
+    flex: 1;
+    height: calc(100vh - 200px);
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .chat-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 100vh;
+    width: 96vw;
+    &__left-section {
+      flex: 0.35;
+      max-height: none;
+      overflow: none;
+      &__wrapper {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    &__right-section {
+      flex: 0.65;
+    }
   }
 }
 </style>

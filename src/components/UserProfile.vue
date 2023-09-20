@@ -8,9 +8,9 @@ const currentUser = computed(() => store.state.User.currentUser)
 
 <template>
   <div class="profile">
-    <div class="profile__image"><img :src="currentUser.photoURL" /></div>
-    <div class="profile__name">{{ currentUser.displayName }}</div>
-    <div class="profile__number">{{ currentUser.phoneNumber }}</div>
+    <div class="profile__image"><img :src="currentUser?.photoURL" /></div>
+    <div class="profile__name">{{ currentUser?.displayName }}</div>
+    <div class="profile__number">{{ currentUser?.phoneNumber }}</div>
   </div>
 </template>
 

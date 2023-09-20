@@ -19,6 +19,13 @@ const users = computed(() => store.state.Chat.chatUsers)
   display: flex;
   flex-direction: column;
   overflow: auto;
-  max-height: 80vh;
+  max-height: 200px;
+  margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+  .chat-list {
+    max-height: 80vh;
+  }
 }
 </style>

@@ -45,10 +45,8 @@ function getCurrentChat(user: any) {
   justify-content: flex-start;
   padding: 5px 10px;
   min-width: 210px;
-  margin: 20px 5px;
+  margin: 5px 5px;
   cursor: pointer;
-  border: 1px solid green;
-  border-radius: 10px;
   $chat-item: &;
   &__profile {
     img {
